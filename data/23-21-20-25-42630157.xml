@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<message>
+<report TIME="23-02-2025T18:20:00">
+<station ID="91026" LAT="56.0394" LON="37.1659" Z="210"/>
+<parameter VAR="WS" Z="10M" T="10M" STATUS="0"> 
+<value PROC="AVE">0.0</value> 
+<value PROC="MAX">0.0</value> 
+</parameter>
+<parameter VAR="WD" Z="10M" TYPE="0" PROC="AVE" T="10M" STATUS="0">315</parameter>
+<parameter VAR="TA" Z="2M" T="10M" STATUS="0">
+<value PROC="AVE">-10.1</value> 
+<value PROC="MAX">-10.0</value> 
+<value PROC="MIN">-10.2</value> 
+</parameter>		
+<parameter VAR="RH" Z="2M" PROC="AVE" T="10M" STATUS="0">88</parameter>
+<parameter VAR="RHG" Z="-40C" PROC="AVE" T="10M" STATUS="0">-3.06</parameter>
+<parameter VAR="TG" PROC="AVE" T="10M">
+<value Z="-20C" STATUS="23">/</value>
+<value Z="-40C" STATUS="23">/</value>
+<value Z="-60C" STATUS="23">/</value>
+</parameter>
+<parameter VAR="AP" PROC="AVE" T="10M" STATUS="0" Z="STN">1005.8</parameter>
+<parameter VAR="AP" PROC="AVE" T="10M" Z="MSL">1033.7</parameter>
+<parameter VAR="LB" PROC="INS" T="1M">12.29</parameter>
+<parameter VAR="PI" Z="2M" PROC="AVE" T="10M" TYPE="L" STATUS="0">0.0</parameter>
+<parameter VAR="P" T="10M" STATUS="0">
+<value PROC="SUM">0.0</value> 
+<value PROC="ACC">703.3</value>
+</parameter>
+<parameter VAR="TELEM" SENSTYPE="BOX" SENSID="0" PROC="AVE" T="10M">-8.9</parameter>
+</report>
+</message>
