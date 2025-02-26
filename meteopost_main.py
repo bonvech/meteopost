@@ -25,4 +25,5 @@ file_list = [file for file in file_list if file not in datafiles]
 for file in file_list:
     print(file)
     ftp.retrbinary("RETR " + file, open("data/" + file, "wb").write)
+
 ftp.quit()
