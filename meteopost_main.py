@@ -281,20 +281,21 @@ if __name__ == '__main__':
     logdirname = f"{datadir}{sep}log"
     device_name = "meteopost"
 
-    ## prepare dirs
+    ##  prepare dirs
     for dir in [datadir, xmldir, outdir, logdirname]:
         if not os.path.exists(dir):
             os.mkdir(dir)
 
-    ## download xml files by ftp
+    ##  download xml files by ftp
     file_list = download_data()
     
-    ## develop all files in xmldir
+    ##  develop all files in xmldir
+    ##  uncomment to process all files in xmldir
     #file_list = os.listdir(xmldir)
 
-    ## parse xml files
+    ##  parse xml files
     data = parse_xmlfiles(file_list)
            
-    ## save to files
+    ##  save to files
     save_data_to_csv_files(data)
     
