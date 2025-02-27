@@ -3,13 +3,11 @@ import os
 import socket
 import telebot
 import xml.etree.ElementTree as ET
-from datetime import datetime
+from datetime import datetime, timezone
 from ftplib import FTP
 
 import meteopost_config as config
 import telebot_config
-
-print(telebot_config.token, telebot_config.channel)
 
 
 ## ----------------------------------------------------------------
@@ -149,7 +147,8 @@ def parse_one_xmlfile(filename):
             #record['time'] = member.attrib['TIME']
             tabrow['time'] = member.attrib['TIME']
             ## '23-02-2025T14:10:00'
-            tabrow['timestamp'] = int(datetime.strptime(member.attrib['TIME'], "%d-%m-%YT%H:%M:%S").timestamp())
+            #tabrow['timestamp'] = int(datetime.strptime(member.attrib['TIME'], "%d-%m-%YT%H:%M:%S").timestamp())
+            tabrow['timestamp'] = int(datetime.strptime(member.attrib['TIME'] + "+0000", "%d-%m-%YT%H:%M:%S%z").timestamp())
     for tag in ['station']:
         for member in root.iter(tag):
             #print(appt.tag + " ==> " + " ".join(f"{x}: {appt.attrib[x]}" for x in appt.attrib))
@@ -289,6 +288,8 @@ if __name__ == '__main__':
 
     ## download xml files by ftp
     file_list = download_data()
+    
+    ## develop all files in xmldir
     #file_list = os.listdir(xmldir)
 
     ## parse xml files
