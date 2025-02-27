@@ -4,6 +4,7 @@ import socket
 import telebot
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
+from fnmatch import fnmatch
 from ftplib import FTP
 
 import meteopost_config as config
@@ -270,6 +271,58 @@ def save_data_to_csv_files(data):
 
 
 ## ----------------------------------------------------------------
+##  get date from filename
+## ----------------------------------------------------------------
+def get_date_from_file(file):
+    for line in open(file).readlines():
+        ## <report TIME="23-01-2025T14:10:00">
+        if '<report' in line:
+            return "_".join(line.split('"')[1].split('"')[0].split('T')[0].split('-')[::-1]) 
+
+
+## ----------------------------------------------------------------
+##  get date name
+## ----------------------------------------------------------------
+def get_datename(day, xmldir):
+    dates = set(get_date_from_file(f"{xmldir}{sep}{file}") for file in os.listdir(xmldir) if fnmatch(file, f"{day}*.xml"))
+    dates = sorted(dates, reverse=True)
+    if debugmode: print(dates)
+    return dates[0]
+
+
+## ----------------------------------------------------------------
+##  group xml files to dirs
+## ----------------------------------------------------------------
+def manage_files(xmldir):
+    filelist = [file for file in os.listdir(xmldir) if os.path.isfile(f"{xmldir}{sep}{file}")]
+
+    ##  get dates from filename
+    dates  = set(file[:2] for file in filelist)
+    counts = [(date, len(list(filter(lambda x: x.startswith(date), filelist)))) for date in dates]
+    counts.sort(key=lambda x: x[1], reverse=True)
+    if debugmode: print(set(dates), counts)
+
+    ##  manage files of one day
+    for (day, count) in counts:
+        if debugmode: print(day, count)
+        ## skip today
+        if int(day) == datetime.now().day:
+            continue
+        
+        ## get date from files and create dir
+        dirname = get_datename(day, xmldir)
+        dirname = f"{xmldir}{sep}{dirname}"
+        if not os.path.exists(dirname):
+            os.mkdir(dirname)
+
+        ## move files to new dir
+        for file in os.listdir(xmldir):
+            if fnmatch(file, f"{day}*.xml"):
+                os.rename(f"{xmldir}{sep}{file}", f"{dirname}{sep}{file}")
+                #print(f"{xmldir}{sep}{file}", f"{xmldir}{sep}{dirname}{sep}{file}")
+
+
+## ----------------------------------------------------------------
 ## ----------------------------------------------------------------
 if __name__ == '__main__':
     debugmode = True
@@ -298,4 +351,9 @@ if __name__ == '__main__':
            
     ##  save to files
     save_data_to_csv_files(data)
+    
+    ##  manage xml files
+    file_list = os.listdir(xmldir)
+    if len(file_list) > 24 * 6 + 20:
+        manage_files(xmldir)
     
